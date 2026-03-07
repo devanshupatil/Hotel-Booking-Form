@@ -1,0 +1,17 @@
+{
+  "name": "hotel-booking-form",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "tailwindcss -i css/input.css -o css/styles.css --minify",
+    "watch:css": "tailwindcss -i css/input.css -o css/styles.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}

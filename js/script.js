@@ -9,9 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const successMessage = document.getElementById('successMessage');
     const resetBtn = document.getElementById('resetBtn');
 
+    // Set today as minimum check-in date
     const today = new Date().toISOString().split('T')[0];
     checkinInput.min = today;
 
+    // Field definitions with validators
     const fields = [
         { input: checkinInput, errorId: 'checkinError', validate: validateCheckin },
         { input: checkoutInput, errorId: 'checkoutError', validate: validateCheckout },
@@ -19,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { input: guestsInput, errorId: 'guestsError', validate: validateGuests }
     ];
 
+    // --- Validation functions ---
     function validateCheckin() {
         const value = checkinInput.value;
         if (!value) return 'Please select a check-in date';
@@ -47,20 +50,32 @@ document.addEventListener('DOMContentLoaded', () => {
         return '';
     }
 
+    // --- Error display helpers using Tailwind classes ---
     function showError(input, errorId, message) {
         const errorElement = document.getElementById(errorId);
-        input.classList.add('error');
-        input.classList.remove('valid');
+        // Apply error border via Tailwind classes
+        input.classList.remove('border-gray-200', 'border-green-500');
+        input.classList.add('border-red-500');
+        // Shake animation
+        input.classList.add('input-shake');
+        setTimeout(() => input.classList.remove('input-shake'), 500);
+        // Show error message
         errorElement.textContent = message;
+        errorElement.classList.add('error-animate');
     }
 
     function clearError(input, errorId) {
         const errorElement = document.getElementById(errorId);
-        input.classList.remove('error');
+        input.classList.remove('border-red-500');
         if (input.value || input.tagName === 'SELECT') {
-            input.classList.add('valid');
+            input.classList.remove('border-gray-200');
+            input.classList.add('border-green-500');
+        } else {
+            input.classList.remove('border-green-500');
+            input.classList.add('border-gray-200');
         }
         errorElement.textContent = '';
+        errorElement.classList.remove('error-animate');
     }
 
     function validateField(field) {
@@ -74,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Dynamic date management ---
     checkinInput.addEventListener('change', () => {
         if (checkinInput.value) {
             const nextDay = new Date(checkinInput.value);
@@ -87,17 +103,20 @@ document.addEventListener('DOMContentLoaded', () => {
         validateField(fields[0]);
     });
 
+    // Real-time validation on change/input
     checkoutInput.addEventListener('change', () => validateField(fields[1]));
     roomTypeSelect.addEventListener('change', () => validateField(fields[2]));
     guestsInput.addEventListener('input', () => validateField(fields[3]));
 
+    // Character count for textarea
     requestsTextarea.addEventListener('input', () => {
         charCount.textContent = requestsTextarea.value.length;
     });
 
+    // --- Form submission ---
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        
+
         let isValid = true;
         fields.forEach(field => {
             if (!validateField(field)) isValid = false;
@@ -107,38 +126,42 @@ document.addEventListener('DOMContentLoaded', () => {
             form.style.opacity = '0';
             form.style.transform = 'scale(0.95)';
             form.style.transition = 'all 0.4s ease';
-            
+
             setTimeout(() => {
                 successMessage.classList.add('active');
             }, 400);
         } else {
-            const firstError = form.querySelector('.error');
+            // Smooth scroll to first error
+            const firstError = form.querySelector('.border-red-500');
             if (firstError) {
                 firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
     });
 
+    // --- Reset form ---
     resetBtn.addEventListener('click', () => {
         successMessage.classList.remove('active');
-        
+
         setTimeout(() => {
             form.reset();
             charCount.textContent = '0';
-            
+
             fields.forEach(field => {
-                field.input.classList.remove('valid', 'error');
+                field.input.classList.remove('border-green-500', 'border-red-500');
+                field.input.classList.add('border-gray-200');
                 document.getElementById(field.errorId).textContent = '';
             });
-            
+
             checkinInput.min = today;
             checkoutInput.min = '';
-            
+
             form.style.opacity = '1';
             form.style.transform = 'scale(1)';
         }, 300);
     });
 
+    // Validate on blur
     fields.forEach(field => {
         field.input.addEventListener('blur', () => {
             if (field.input.value || field.input.tagName === 'SELECT') {
