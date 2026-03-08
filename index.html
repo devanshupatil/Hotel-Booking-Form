@@ -51,6 +51,21 @@
             <!-- Booking Form -->
             <form id="bookingForm" class="flex flex-col gap-6">
 
+                <!-- Guest Name -->
+                <div class="flex flex-col gap-2">
+                    <label for="guestName" class="text-sm font-medium text-primary">Guest Name</label>
+                    <div class="relative flex items-center group">
+                        <svg class="absolute left-4 w-5 h-5 text-gray-500 transition-all duration-300 pointer-events-none group-focus-within:text-accent"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <input type="text" id="guestName" placeholder="Enter your full name" required
+                            class="w-full py-4 pl-12 pr-4 font-poppins text-[15px] text-primary bg-white border-2 border-gray-200 rounded-lg outline-none transition-all duration-300 focus:border-accent focus:ring-4 focus:ring-accent/15">
+                    </div>
+                    <p id="guestNameError" class="text-xs text-red-500 min-h-[18px]"></p>
+                </div>
+
                 <!-- Check-in & Check-out Row -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <!-- Check-in Date -->

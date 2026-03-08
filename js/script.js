@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('bookingForm');
+    const guestNameInput = document.getElementById('guestName');
     const checkinInput = document.getElementById('checkin');
     const checkoutInput = document.getElementById('checkout');
     const roomTypeSelect = document.getElementById('roomType');
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Field definitions with validators
     const fields = [
+        { input: guestNameInput, errorId: 'guestNameError', validate: validateGuestName },
         { input: checkinInput, errorId: 'checkinError', validate: validateCheckin },
         { input: checkoutInput, errorId: 'checkoutError', validate: validateCheckout },
         { input: roomTypeSelect, errorId: 'roomTypeError', validate: validateRoomType },
@@ -22,6 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     // --- Validation functions ---
+    function validateGuestName() {
+        const value = guestNameInput.value.trim();
+        if (!value) return 'Please enter your name';
+        if (value.length < 2) return 'Name must be at least 2 characters';
+        return '';
+    }
+
     function validateCheckin() {
         const value = checkinInput.value;
         if (!value) return 'Please select a check-in date';
@@ -100,13 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearError(checkoutInput, 'checkoutError');
             }
         }
-        validateField(fields[0]);
+        validateField(fields[1]);
     });
 
     // Real-time validation on change/input
-    checkoutInput.addEventListener('change', () => validateField(fields[1]));
-    roomTypeSelect.addEventListener('change', () => validateField(fields[2]));
-    guestsInput.addEventListener('input', () => validateField(fields[3]));
+    guestNameInput.addEventListener('input', () => validateField(fields[0]));
+    checkoutInput.addEventListener('change', () => validateField(fields[2]));
+    roomTypeSelect.addEventListener('change', () => validateField(fields[3]));
+    guestsInput.addEventListener('input', () => validateField(fields[4]));
 
     // Character count for textarea
     requestsTextarea.addEventListener('input', () => {
