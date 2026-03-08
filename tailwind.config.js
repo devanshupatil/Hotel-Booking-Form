@@ -13,6 +13,7 @@ module.exports = {
       },
       animation: {
         float: 'float 20s ease-in-out infinite',
+        'float-drift': 'floatDrift 30s ease-in-out infinite',
         'slide-up': 'slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards',
         'fade-in': 'fadeIn 0.8s ease both',
         'fade-in-delay-1': 'fadeIn 0.8s ease 0.2s both',
@@ -29,6 +30,12 @@ module.exports = {
           '25%': { transform: 'translateY(-30px) rotate(5deg)' },
           '50%': { transform: 'translateY(0) rotate(0deg)' },
           '75%': { transform: 'translateY(30px) rotate(-5deg)' },
+        },
+        floatDrift: {
+          '0%, 100%': { transform: 'translateY(0) translateX(0) scale(1)' },
+          '25%': { transform: 'translateY(-20px) translateX(10px) scale(1.03)' },
+          '50%': { transform: 'translateY(5px) translateX(-5px) scale(0.97)' },
+          '75%': { transform: 'translateY(-10px) translateX(-10px) scale(1.02)' },
         },
         slideUp: {
           from: { opacity: '0', transform: 'translateY(40px)' },
